@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class VariableUnitTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def test_variable
     var = Variable.new('hello')

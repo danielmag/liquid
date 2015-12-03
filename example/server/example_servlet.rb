@@ -16,7 +16,7 @@ module ProductsFilter
   end
 end
 
-class Servlet < LiquidServlet
+class Servlet < TwigServlet
 
   def index
     { 'date' => Time.now }

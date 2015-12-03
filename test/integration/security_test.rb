@@ -7,7 +7,7 @@ module SecurityFilter
 end
 
 class SecurityTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def test_no_instance_eval
     text = %( {{ '1+1' | instance_eval }} )

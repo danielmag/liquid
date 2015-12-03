@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class StatementsTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def test_true_eql_true
     text = ' {% if true == true %} true {% else %} false {% endif %} '

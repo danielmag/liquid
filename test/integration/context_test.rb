@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ContextTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def test_override_global_filter
     global = Module.new do

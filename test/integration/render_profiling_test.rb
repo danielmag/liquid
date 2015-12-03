@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class RenderProfilingTest < Minitest::Test
-  include Liquid
+  include Twig
 
   class ProfilingFileSystem
     def read_template_file(template_path, context)
@@ -10,7 +10,7 @@ class RenderProfilingTest < Minitest::Test
   end
 
   def setup
-    Liquid::Template.file_system = ProfilingFileSystem.new
+    Twig::Template.file_system = ProfilingFileSystem.new
   end
 
   def test_template_allows_flagging_profiling
@@ -37,7 +37,7 @@ class RenderProfilingTest < Minitest::Test
     assert_equal 0, t.profiler.length
   end
 
-  def test_profiling_includes_line_numbers_of_liquid_nodes
+  def test_profiling_includes_line_numbers_of_twig_nodes
     t = Template.parse("{{ 'a string' | upcase }}\n{% increment test %}", :profile => true)
     t.render!
     assert_equal 2, t.profiler.length

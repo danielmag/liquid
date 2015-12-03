@@ -23,7 +23,7 @@ module SubstituteFilter
 end
 
 class FiltersTest < Minitest::Test
-  include Liquid
+  include Twig
 
   module OverrideObjectMethodFilter
     def tap(input)
@@ -121,7 +121,7 @@ class FiltersTest < Minitest::Test
 end
 
 class FiltersInTemplate < Minitest::Test
-  include Liquid
+  include Twig
 
   def test_local_global
     with_global_filter(MoneyFilter) do

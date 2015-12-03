@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class StrainerUnitTest < Minitest::Test
-  include Liquid
+  include Twig
 
   module AccessScopeFilters
     def public_filter
@@ -24,7 +24,7 @@ class StrainerUnitTest < Minitest::Test
 
   def test_stainer_raises_argument_error
     strainer = Strainer.create(nil)
-    assert_raises(Liquid::ArgumentError) do
+    assert_raises(Twig::ArgumentError) do
       strainer.invoke("public_filter", 1)
     end
   end
@@ -63,7 +63,7 @@ class StrainerUnitTest < Minitest::Test
     assert_kind_of Strainer, strainer
     assert_kind_of a, strainer
     assert_kind_of b, strainer
-    assert_kind_of Liquid::StandardFilters, strainer
+    assert_kind_of Twig::StandardFilters, strainer
   end
 
 end # StrainerTest

@@ -1,7 +1,7 @@
 require 'rake'
 require 'rake/testtask'
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
-require "liquid/version"
+require "twig/version"
 
 task :default => 'test'
 
@@ -14,43 +14,43 @@ end
 
 desc 'run test suite with warn error mode'
 task :warn_test do
-  ENV['LIQUID_PARSER_MODE'] = 'warn'
+  ENV['TWIG_PARSER_MODE'] = 'warn'
   Rake::Task['base_test'].invoke
 end
 
 desc 'runs test suite with both strict and lax parsers'
 task :test do
-  ENV['LIQUID_PARSER_MODE'] = 'lax'
+  ENV['TWIG_PARSER_MODE'] = 'lax'
   Rake::Task['base_test'].invoke
-  ENV['LIQUID_PARSER_MODE'] = 'strict'
+  ENV['TWIG_PARSER_MODE'] = 'strict'
   Rake::Task['base_test'].reenable
   Rake::Task['base_test'].invoke
 end
 
 task :gem => :build
 task :build do
-  system "gem build liquid.gemspec"
+  system "gem build twig.gemspec"
 end
 
 task :install => :build do
-  system "gem install liquid-#{Liquid::VERSION}.gem"
+  system "gem install twig-#{Twig::VERSION}.gem"
 end
 
 task :release => :build do
-  system "git tag -a v#{Liquid::VERSION} -m 'Tagging #{Liquid::VERSION}'"
+  system "git tag -a v#{Twig::VERSION} -m 'Tagging #{Twig::VERSION}'"
   system "git push --tags"
-  system "gem push liquid-#{Liquid::VERSION}.gem"
-  system "rm liquid-#{Liquid::VERSION}.gem"
+  system "gem push twig-#{Twig::VERSION}.gem"
+  system "rm twig-#{Twig::VERSION}.gem"
 end
 
 namespace :benchmark do
 
-  desc "Run the liquid benchmark with lax parsing"
+  desc "Run the twig benchmark with lax parsing"
   task :run do
     ruby "./performance/benchmark.rb lax"
   end
 
-  desc "Run the liquid benchmark with strict parsing"
+  desc "Run the twig benchmark with strict parsing"
   task :strict do
     ruby "./performance/benchmark.rb strict"
   end
@@ -59,12 +59,12 @@ end
 
 namespace :profile do
 
-  desc "Run the liquid profile/performance coverage"
+  desc "Run the twig profile/performance coverage"
   task :run do
     ruby "./performance/profile.rb"
   end
 
-  desc "Run the liquid profile/performance coverage with strict parsing"
+  desc "Run the twig profile/performance coverage with strict parsing"
   task :strict do
     ruby "./performance/profile.rb strict"
   end

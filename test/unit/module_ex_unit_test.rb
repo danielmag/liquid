@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class TestClassA
-  liquid_methods :allowedA, :chainedB
+  twig_methods :allowedA, :chainedB
   def allowedA
     'allowedA'
   end
@@ -14,7 +14,7 @@ class TestClassA
 end
 
 class TestClassB
-  liquid_methods :allowedB, :chainedC
+  twig_methods :allowedB, :chainedC
   def allowedB
     'allowedB'
   end
@@ -24,20 +24,20 @@ class TestClassB
 end
 
 class TestClassC
-  liquid_methods :allowedC
+  twig_methods :allowedC
   def allowedC
     'allowedC'
   end
 end
 
-class TestClassC::LiquidDropClass
+class TestClassC::TwigDropClass
   def another_allowedC
     'another_allowedC'
   end
 end
 
 class ModuleExUnitTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def setup
     @a = TestClassA.new
@@ -45,35 +45,35 @@ class ModuleExUnitTest < Minitest::Test
     @c = TestClassC.new
   end
 
-  def test_should_create_LiquidDropClass
-    assert TestClassA::LiquidDropClass
-    assert TestClassB::LiquidDropClass
-    assert TestClassC::LiquidDropClass
+  def test_should_create_TwigDropClass
+    assert TestClassA::TwigDropClass
+    assert TestClassB::TwigDropClass
+    assert TestClassC::TwigDropClass
   end
 
-  def test_should_respond_to_liquid
-    assert @a.respond_to?(:to_liquid)
-    assert @b.respond_to?(:to_liquid)
-    assert @c.respond_to?(:to_liquid)
+  def test_should_respond_to_twig
+    assert @a.respond_to?(:to_twig)
+    assert @b.respond_to?(:to_twig)
+    assert @c.respond_to?(:to_twig)
   end
 
-  def test_should_return_LiquidDropClass_object
-    assert @a.to_liquid.is_a?(TestClassA::LiquidDropClass)
-    assert @b.to_liquid.is_a?(TestClassB::LiquidDropClass)
-    assert @c.to_liquid.is_a?(TestClassC::LiquidDropClass)
+  def test_should_return_TwigDropClass_object
+    assert @a.to_twig.is_a?(TestClassA::TwigDropClass)
+    assert @b.to_twig.is_a?(TestClassB::TwigDropClass)
+    assert @c.to_twig.is_a?(TestClassC::TwigDropClass)
   end
 
-  def test_should_respond_to_liquid_methods
-    assert @a.to_liquid.respond_to?(:allowedA)
-    assert @a.to_liquid.respond_to?(:chainedB)
-    assert @b.to_liquid.respond_to?(:allowedB)
-    assert @b.to_liquid.respond_to?(:chainedC)
-    assert @c.to_liquid.respond_to?(:allowedC)
-    assert @c.to_liquid.respond_to?(:another_allowedC)
+  def test_should_respond_to_twig_methods
+    assert @a.to_twig.respond_to?(:allowedA)
+    assert @a.to_twig.respond_to?(:chainedB)
+    assert @b.to_twig.respond_to?(:allowedB)
+    assert @b.to_twig.respond_to?(:chainedC)
+    assert @c.to_twig.respond_to?(:allowedC)
+    assert @c.to_twig.respond_to?(:another_allowedC)
   end
 
   def test_should_not_respond_to_restricted_methods
-    assert ! @a.to_liquid.respond_to?(:restricted)
+    assert ! @a.to_twig.respond_to?(:restricted)
   end
 
   def test_should_use_regular_objects_as_drops

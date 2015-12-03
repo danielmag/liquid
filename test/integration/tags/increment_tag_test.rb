@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class IncrementTagTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def test_inc
     assert_template_result('0','{%increment port %}', {})

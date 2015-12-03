@@ -28,7 +28,7 @@ module FunnyFilter
 end
 
 class OutputTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def setup
     @assigns = {

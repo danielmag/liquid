@@ -1,12 +1,12 @@
 require 'test_helper'
 
 class HundredCentes
-  def to_liquid
+  def to_twig
     100
   end
 end
 
-class CentsDrop < Liquid::Drop
+class CentsDrop < Twig::Drop
   def amount
     HundredCentes.new
   end
@@ -16,20 +16,20 @@ class CentsDrop < Liquid::Drop
   end
 end
 
-class ContextSensitiveDrop < Liquid::Drop
+class ContextSensitiveDrop < Twig::Drop
   def test
     @context['test']
   end
 end
 
-class Category < Liquid::Drop
+class Category < Twig::Drop
   attr_accessor :name
 
   def initialize(name)
     @name = name
   end
 
-  def to_liquid
+  def to_twig
     CategoryDrop.new(self)
   end
 end
@@ -41,7 +41,7 @@ class CategoryDrop
   end
 end
 
-class CounterDrop < Liquid::Drop
+class CounterDrop < Twig::Drop
   def count
     @count ||= 0
     @count += 1
@@ -58,16 +58,16 @@ class ArrayLike
     @counts[index] += 1
   end
 
-  def to_liquid
+  def to_twig
     self
   end
 end
 
 class ContextUnitTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def setup
-    @context = Liquid::Context.new
+    @context = Twig::Context.new
   end
 
   def teardown
@@ -110,11 +110,11 @@ class ContextUnitTest < Minitest::Test
     @context.push
     @context.pop
 
-    assert_raises(Liquid::ContextError) do
+    assert_raises(Twig::ContextError) do
       @context.pop
     end
 
-    assert_raises(Liquid::ContextError) do
+    assert_raises(Twig::ContextError) do
       @context.push
       @context.pop
       @context.pop
@@ -454,7 +454,7 @@ class ContextUnitTest < Minitest::Test
     assert_equal 345392, @context['magic']
   end
 
-  def test_to_liquid_and_context_at_first_level
+  def test_to_twig_and_context_at_first_level
     @context['category'] = Category.new("foobar")
     assert_kind_of CategoryDrop, @context['category']
     assert_equal @context, @context['category'].context

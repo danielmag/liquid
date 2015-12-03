@@ -1,11 +1,11 @@
 require 'test_helper'
 
-class FoobarTag < Liquid::Tag
+class FoobarTag < Twig::Tag
   def render(*args)
     " "
   end
 
-  Liquid::Template.register_tag('foobar', FoobarTag)
+  Twig::Template.register_tag('foobar', FoobarTag)
 end
 
 class BlankTestFileSystem
@@ -15,7 +15,7 @@ class BlankTestFileSystem
 end
 
 class BlankTest < Minitest::Test
-  include Liquid
+  include Twig
   N = 10
 
   def wrap_in_for(body)
@@ -92,7 +92,7 @@ class BlankTest < Minitest::Test
   end
 
   def test_include_is_blank
-    Liquid::Template.file_system = BlankTestFileSystem.new
+    Twig::Template.file_system = BlankTestFileSystem.new
     assert_template_result "foobar"*(N+1), wrap("{% include 'foobar' %}")
     assert_template_result " foobar "*(N+1), wrap("{% include ' foobar ' %}")
     assert_template_result "   "*(N+1), wrap(" {% include ' ' %} ")

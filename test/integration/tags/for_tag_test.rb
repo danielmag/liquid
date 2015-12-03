@@ -1,13 +1,13 @@
 require 'test_helper'
 
-class ThingWithValue < Liquid::Drop
+class ThingWithValue < Twig::Drop
   def value
     3
   end
 end
 
 class ForTagTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def test_for
     assert_template_result(' yo  yo  yo  yo ','{%for item in array%} yo {%endfor%}','array' => [1,2,3,4])
@@ -303,8 +303,8 @@ HERE
   end
 
   def test_bad_variable_naming_in_for_loop
-    assert_raises(Liquid::SyntaxError) do
-      Liquid::Template.parse('{% for a/b in x %}{% endfor %}')
+    assert_raises(Twig::SyntaxError) do
+      Twig::Template.parse('{% for a/b in x %}{% endfor %}')
     end
   end
 
@@ -315,7 +315,7 @@ HERE
     assert_template_result(expected, template, assigns)
   end
 
-  class LoaderDrop < Liquid::Drop
+  class LoaderDrop < Twig::Drop
     attr_accessor :each_called, :load_slice_called
 
     def initialize(data)

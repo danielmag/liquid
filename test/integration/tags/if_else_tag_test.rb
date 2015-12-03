@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class IfElseTagTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def test_if
     assert_template_result('  ',' {% if false %} this text should not go into the output {% endif %} ')
@@ -156,7 +156,7 @@ class IfElseTagTest < Minitest::Test
     Condition.operators['contains'] = :[]
 
     assert_template_result('yes',
-                           %({% if 'gnomeslab-and-or-liquid' contains 'gnomeslab-and-or-liquid' %}yes{% endif %}))
+                           %({% if 'gnomeslab-and-or-twig' contains 'gnomeslab-and-or-twig' %}yes{% endif %}))
   ensure
     Condition.operators['contains'] = original_op
   end

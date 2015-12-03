@@ -5,14 +5,14 @@ require 'minitest/autorun'
 require 'spy/integration'
 
 $:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib'))
-require 'liquid.rb'
+require 'twig.rb'
 
 mode = :strict
-if env_mode = ENV['LIQUID_PARSER_MODE']
+if env_mode = ENV['TWIG_PARSER_MODE']
   puts "-- #{env_mode.upcase} ERROR MODE"
   mode = env_mode.to_sym
 end
-Liquid::Template.error_mode = mode
+Twig::Template.error_mode = mode
 
 if Minitest.const_defined?('Test')
   # We're on Minitest 5+. Nothing to do here.
@@ -29,7 +29,7 @@ module Minitest
   end
 
   module Assertions
-    include Liquid
+    include Twig
 
     def assert_template_result(expected, template, assigns = {}, message = nil)
       assert_equal expected, Template.parse(template).render!(assigns), message
@@ -42,48 +42,48 @@ module Minitest
     end
 
     def assert_match_syntax_error(match, template, registers = {})
-      exception = assert_raises(Liquid::SyntaxError) {
+      exception = assert_raises(Twig::SyntaxError) {
         Template.parse(template).render(assigns)
       }
       assert_match match, exception.message
     end
 
     def with_global_filter(*globals)
-      original_global_strainer = Liquid::Strainer.class_variable_get(:@@global_strainer)
-      Liquid::Strainer.class_variable_set(:@@global_strainer, Class.new(Liquid::Strainer) do
+      original_global_strainer = Twig::Strainer.class_variable_get(:@@global_strainer)
+      Twig::Strainer.class_variable_set(:@@global_strainer, Class.new(Twig::Strainer) do
         @filter_methods = Set.new
       end)
-      Liquid::Strainer.class_variable_get(:@@strainer_class_cache).clear
+      Twig::Strainer.class_variable_get(:@@strainer_class_cache).clear
 
       globals.each do |global|
-        Liquid::Template.register_filter(global)
+        Twig::Template.register_filter(global)
       end
       yield
     ensure
-      Liquid::Strainer.class_variable_get(:@@strainer_class_cache).clear
-      Liquid::Strainer.class_variable_set(:@@global_strainer, original_global_strainer)
+      Twig::Strainer.class_variable_get(:@@strainer_class_cache).clear
+      Twig::Strainer.class_variable_set(:@@global_strainer, original_global_strainer)
     end
 
     def with_taint_mode(mode)
-      old_mode = Liquid::Template.taint_mode
-      Liquid::Template.taint_mode = mode
+      old_mode = Twig::Template.taint_mode
+      Twig::Template.taint_mode = mode
       yield
     ensure
-      Liquid::Template.taint_mode = old_mode
+      Twig::Template.taint_mode = old_mode
     end
 
     def with_error_mode(mode)
-      old_mode = Liquid::Template.error_mode
-      Liquid::Template.error_mode = mode
+      old_mode = Twig::Template.error_mode
+      Twig::Template.error_mode = mode
       yield
     ensure
-      Liquid::Template.error_mode = old_mode
+      Twig::Template.error_mode = old_mode
     end
   end
 end
 
-class ThingWithToLiquid
-  def to_liquid
+class ThingWithToTwig
+  def to_twig
     'foobar'
   end
 end

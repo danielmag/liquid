@@ -1,9 +1,9 @@
 require 'test_helper'
 
 class TableRowTest < Minitest::Test
-  include Liquid
+  include Twig
 
-  class ArrayDrop < Liquid::Drop
+  class ArrayDrop < Twig::Drop
     include Enumerable
 
     def initialize(array)

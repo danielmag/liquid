@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class Filters
-  include Liquid::StandardFilters
+  include Twig::StandardFilters
 end
 
 class TestThing
@@ -21,19 +21,19 @@ class TestThing
     to_s
   end
 
-  def to_liquid
+  def to_twig
     @foo += 1
     self
   end
 end
 
-class TestDrop < Liquid::Drop
+class TestDrop < Twig::Drop
   def test
     "testfoo"
   end
 end
 
-class TestEnumerable < Liquid::Drop
+class TestEnumerable < Twig::Drop
   include Enumerable
 
   def each(&block)
@@ -42,7 +42,7 @@ class TestEnumerable < Liquid::Drop
 end
 
 class StandardFiltersTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def setup
     @filters = Filters.new
@@ -104,7 +104,7 @@ class StandardFiltersTest < Minitest::Test
     assert_equal ['12','34'], @filters.split('12~34', '~')
     assert_equal ['A? ',' ,Z'], @filters.split('A? ~ ~ ~ ,Z', '~ ~ ~')
     assert_equal ['A?Z'], @filters.split('A?Z', '~')
-    # Regexp works although Liquid does not support.
+    # Regexp works although Twig does not support.
     assert_equal ['A','Z'], @filters.split('AxZ', /x/)
     assert_equal [], @filters.split(nil, ' ')
   end
@@ -188,7 +188,7 @@ class StandardFiltersTest < Minitest::Test
     assert_template_result "", '{{ "foo" | map: "inspect" }}'
   end
 
-  def test_map_calls_to_liquid
+  def test_map_calls_to_twig
     t = TestThing.new
     assert_template_result "woot: 1", '{{ foo | map: "whatever" }}', "foo" => [t]
   end
@@ -204,9 +204,9 @@ class StandardFiltersTest < Minitest::Test
     assert_template_result "42", template, "thing" => hash
   end
 
-  def test_sort_calls_to_liquid
+  def test_sort_calls_to_twig
     t = TestThing.new
-    Liquid::Template.parse('{{ foo | sort: "whatever" }}').render("foo" => [t])
+    Twig::Template.parse('{{ foo | sort: "whatever" }}').render("foo" => [t])
     assert t.foo > 0
   end
 
@@ -225,9 +225,9 @@ class StandardFiltersTest < Minitest::Test
     assert_template_result "213", '{{ foo | sort: "bar" | map: "foo" }}', "foo" => TestEnumerable.new
   end
 
-  def test_first_and_last_call_to_liquid
-    assert_template_result 'foobar', '{{ foo | first }}', 'foo' => [ThingWithToLiquid.new]
-    assert_template_result 'foobar', '{{ foo | last }}', 'foo' => [ThingWithToLiquid.new]
+  def test_first_and_last_call_to_twig
+    assert_template_result 'foobar', '{{ foo | first }}', 'foo' => [ThingWithToTwig.new]
+    assert_template_result 'foobar', '{{ foo | last }}', 'foo' => [ThingWithToTwig.new]
   end
 
   def test_date
@@ -329,7 +329,7 @@ class StandardFiltersTest < Minitest::Test
     assert_template_result "4", "{{ 14 | divided_by:3 }}"
 
     assert_template_result "5", "{{ 15 | divided_by:3 }}"
-    assert_equal "Liquid error: divided by 0", Template.parse("{{ 5 | divided_by:0 }}").render
+    assert_equal "Twig error: divided by 0", Template.parse("{{ 5 | divided_by:0 }}").render
 
     assert_template_result "0.5", "{{ 2.0 | divided_by:4 }}"
   end

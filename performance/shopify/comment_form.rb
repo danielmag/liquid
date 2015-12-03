@@ -1,5 +1,5 @@
-class CommentForm < Liquid::Block
-  Syntax = /(#{Liquid::VariableSignature}+)/
+class CommentForm < Twig::Block
+  Syntax = /(#{Twig::VariableSignature}+)/
 
   def initialize(tag_name, markup, options)
     super

@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class AssignTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def test_assign_with_hyphen_in_variable_name
     template_source = <<-END_TEMPLATE

@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ConditionUnitTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def test_basic_condition
     assert_equal false, Condition.new('1', '==', '2').evaluate
@@ -61,7 +61,7 @@ class ConditionUnitTest < Minitest::Test
   end
 
   def test_contains_works_on_arrays
-    @context = Liquid::Context.new
+    @context = Twig::Context.new
     @context['array'] = [1,2,3,4,5]
 
     assert_evalutes_false "array",  'contains', '0'
@@ -75,7 +75,7 @@ class ConditionUnitTest < Minitest::Test
   end
 
   def test_contains_returns_false_for_nil_operands
-    @context = Liquid::Context.new
+    @context = Twig::Context.new
     assert_evalutes_false "not_assigned", 'contains', '0'
     assert_evalutes_false "0", 'contains', 'not_assigned'
   end
@@ -123,26 +123,26 @@ class ConditionUnitTest < Minitest::Test
   end
 
   def test_left_or_right_may_contain_operators
-    @context = Liquid::Context.new
-    @context['one'] = @context['another'] = "gnomeslab-and-or-liquid"
+    @context = Twig::Context.new
+    @context['one'] = @context['another'] = "gnomeslab-and-or-twig"
 
     assert_evalutes_true "one", '==', "another"
   end
 
   private
     def assert_evalutes_true(left, op, right)
-      assert Condition.new(left, op, right).evaluate(@context || Liquid::Context.new),
+      assert Condition.new(left, op, right).evaluate(@context || Twig::Context.new),
              "Evaluated false: #{left} #{op} #{right}"
     end
 
     def assert_evalutes_false(left, op, right)
-      assert !Condition.new(left, op, right).evaluate(@context || Liquid::Context.new),
+      assert !Condition.new(left, op, right).evaluate(@context || Twig::Context.new),
              "Evaluated true: #{left} #{op} #{right}"
     end
 
     def assert_evaluates_argument_error(left, op, right)
-      assert_raises(Liquid::ArgumentError) do
-        Condition.new(left, op, right).evaluate(@context || Liquid::Context.new)
+      assert_raises(Twig::ArgumentError) do
+        Condition.new(left, op, right).evaluate(@context || Twig::Context.new)
       end
     end
 

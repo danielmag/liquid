@@ -13,7 +13,7 @@ module CanadianMoneyFilter
 end
 
 class HashOrderingTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def test_global_register_order
     with_global_filter(MoneyFilter, CanadianMoneyFilter) do

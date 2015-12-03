@@ -51,8 +51,8 @@ class CountingFileSystem
   end
 end
 
-class CustomInclude < Liquid::Tag
-  Syntax = /(#{Liquid::QuotedFragment}+)(\s+(?:with|for)\s+(#{Liquid::QuotedFragment}+))?/o
+class CustomInclude < Twig::Tag
+  Syntax = /(#{Twig::QuotedFragment}+)(\s+(?:with|for)\s+(#{Twig::QuotedFragment}+))?/o
 
   def initialize(tag_name, markup, tokens)
     markup =~ Syntax
@@ -69,10 +69,10 @@ class CustomInclude < Liquid::Tag
 end
 
 class IncludeTagTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def setup
-    Liquid::Template.file_system = TestFileSystem.new
+    Twig::Template.file_system = TestFileSystem.new
   end
 
   def test_include_tag_looks_for_file_system_in_registers_first
@@ -137,9 +137,9 @@ class IncludeTagTest < Minitest::Test
       end
     end
 
-    Liquid::Template.file_system = infinite_file_system.new
+    Twig::Template.file_system = infinite_file_system.new
 
-    assert_raises(Liquid::StackLevelError, SystemStackError) do
+    assert_raises(Twig::StackLevelError, SystemStackError) do
       Template.parse("{% include 'loop' %}").render!
     end
 
@@ -152,7 +152,7 @@ class IncludeTagTest < Minitest::Test
       end
     end
 
-    Liquid::Template.file_system = infinite_file_system.new
+    Twig::Template.file_system = infinite_file_system.new
 
     Template.parse("{% include 'hi_mom' %}").render!
   end
@@ -188,43 +188,43 @@ class IncludeTagTest < Minitest::Test
   end
 
   def test_custom_include_tag
-    original_tag = Liquid::Template.tags['include']
-    Liquid::Template.tags['include'] = CustomInclude
+    original_tag = Twig::Template.tags['include']
+    Twig::Template.tags['include'] = CustomInclude
     begin
       assert_equal "custom_foo",
         Template.parse("{% include 'custom_foo' %}").render!
     ensure
-      Liquid::Template.tags['include'] = original_tag
+      Twig::Template.tags['include'] = original_tag
     end
   end
 
   def test_custom_include_tag_within_if_statement
-    original_tag = Liquid::Template.tags['include']
-    Liquid::Template.tags['include'] = CustomInclude
+    original_tag = Twig::Template.tags['include']
+    Twig::Template.tags['include'] = CustomInclude
     begin
       assert_equal "custom_foo_if_true",
         Template.parse("{% if true %}{% include 'custom_foo_if_true' %}{% endif %}").render!
     ensure
-      Liquid::Template.tags['include'] = original_tag
+      Twig::Template.tags['include'] = original_tag
     end
   end
 
   def test_does_not_add_error_in_strict_mode_for_missing_variable
-    Liquid::Template.file_system = TestFileSystem.new
+    Twig::Template.file_system = TestFileSystem.new
 
-    a = Liquid::Template.parse(' {% include "nested_template" %}')
+    a = Twig::Template.parse(' {% include "nested_template" %}')
     a.render!
     assert_empty a.errors
   end
 
   def test_passing_options_to_included_templates
-    assert_raises(Liquid::SyntaxError) do
+    assert_raises(Twig::SyntaxError) do
       Template.parse("{% include template %}", error_mode: :strict).render!("template" => '{{ "X" || downcase }}')
     end
     with_error_mode(:lax) do
       assert_equal 'x', Template.parse("{% include template %}", error_mode: :strict, include_options_blacklist: true).render!("template" => '{{ "X" || downcase }}')
     end
-    assert_raises(Liquid::SyntaxError) do
+    assert_raises(Twig::SyntaxError) do
       Template.parse("{% include template %}", error_mode: :strict, include_options_blacklist: [:locale]).render!("template" => '{{ "X" || downcase }}')
     end
     with_error_mode(:lax) do

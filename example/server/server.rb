@@ -3,8 +3,8 @@ require 'rexml/document'
 
 DIR = File.expand_path(File.dirname(__FILE__))
 
-require DIR + '/../../lib/liquid'
-require DIR + '/liquid_servlet'
+require DIR + '/../../lib/twig'
+require DIR + '/twig_servlet'
 require DIR + '/example_servlet'
 
 # Setup webrick

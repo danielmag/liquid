@@ -22,7 +22,7 @@ class TokenizerTest < Minitest::Test
   end
 
   def test_calculate_line_numbers_per_token_with_profiling
-    template = Liquid::Template.parse("", :profile => true)
+    template = Twig::Template.parse("", :profile => true)
 
     assert_equal [1],       template.send(:tokenize, "{{funk}}").map(&:line_number)
     assert_equal [1, 1, 1], template.send(:tokenize, " {{funk}} ").map(&:line_number)
@@ -33,6 +33,6 @@ class TokenizerTest < Minitest::Test
   private
 
   def tokenize(source)
-    Liquid::Template.new.send(:tokenize, source)
+    Twig::Template.new.send(:tokenize, source)
   end
 end

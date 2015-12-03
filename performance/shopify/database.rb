@@ -2,7 +2,7 @@ require 'yaml'
 
 module Database
   # Load the standard vision toolkit database and re-arrage it to be simply exportable
-  # to liquid as assigns. All this is based on Shopify
+  # to twig as assigns. All this is based on Shopify
   def self.tables
     @tables ||= begin
       db = YAML.load_file(File.dirname(__FILE__) + '/vision.database.yml')
@@ -15,7 +15,7 @@ module Database
         product['collections'] = collections
       end
 
-      # key the tables by handles, as this is how liquid expects it.
+      # key the tables by handles, as this is how twig expects it.
       db = db.inject({}) do |assigns, (key, values)|
         assigns[key] = values.inject({}) { |h, v| h[v['handle']] = v; h; }
         assigns

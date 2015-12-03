@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class UnlessElseTagTest < Minitest::Test
-  include Liquid
+  include Twig
 
   def test_unless
     assert_template_result('  ',' {% unless true %} this text should not go into the output {% endunless %} ')

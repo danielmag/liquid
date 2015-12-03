@@ -1,4 +1,4 @@
-# Liquid Version History
+# Twig Version History
 
 ## 3.0.5 / 2015-07-23 / branch "3-0-stable"
 
@@ -36,8 +36,8 @@
 * Freeze lots of string literals for new Ruby 2.1 optimization, see #297 [Florian Weingarten, fw42]
 * Allow newlines in tags and variables, see #324 [Dylan Thacker-Smith, dylanahsmith]
 * Tag#parse is called after initialize, which now takes options instead of tokens as the 3rd argument. See #321 [Dylan Thacker-Smith, dylanahsmith]
-* Raise `Liquid::ArgumentError` instead of `::ArgumentError` when filter has wrong number of arguments #309 [Bogdan Gusiev, bogdan]
-* Add a to_s default for liquid drops, see #306 [Adam Doeler, releod]
+* Raise `Twig::ArgumentError` instead of `::ArgumentError` when filter has wrong number of arguments #309 [Bogdan Gusiev, bogdan]
+* Add a to_s default for twig drops, see #306 [Adam Doeler, releod]
 * Add strip, lstrip, and rstrip to standard filters [Florian Weingarten, fw42]
 * Make if, for & case tags return complete and consistent nodelists, see #250 [Nick Jones, dntj]
 * Prevent arbitrary method invocation on condition objects, see #274 [Dylan Thacker-Smith, dylanahsmith]
@@ -72,7 +72,7 @@ Security fix, cherry-picked from master (4e14a65):
 
 ## 2.6.0 / 2013-11-25
 
-IMPORTANT: Liquid 2.6 is going to be the last version of Liquid which maintains explicit Ruby 1.8 compatability.
+IMPORTANT: Twig 2.6 is going to be the last version of Twig which maintains explicit Ruby 1.8 compatability.
 The following releases will only be tested against Ruby 1.9 and Ruby 2.0 and are likely to break on Ruby 1.8.
 
 * Bugfix for #106: fix example servlet [gnowoel]
@@ -84,7 +84,7 @@ The following releases will only be tested against Ruby 1.9 and Ruby 2.0 and are
 * Bugfix for #150: 'for' parsing bug [Peter Schröder, phoet]
 * Bugfix for #126: Strip CRLF in strip_newline [Peter Schröder, phoet]
 * Bugfix for #174, "can't convert Fixnum into String" for "replace" [wǒ_is神仙, jsw0528]
-* Allow a Liquid::Drop to be passed into Template#render [Daniel Huckstep, darkhelmet]
+* Allow a Twig::Drop to be passed into Template#render [Daniel Huckstep, darkhelmet]
 * Resource limits [Florian Weingarten, fw42]
 * Add reverse filter [Jay Strybis, unreal]
 * Add utf-8 support
@@ -119,7 +119,7 @@ Yanked from rubygems, as it contained too many changes that broke compatibility.
 ## 2.5.0 / 2013-03-06
 
 * Prevent Object methods from being called on drops
-* Avoid symbol injection from liquid
+* Avoid symbol injection from twig
 * Added break and continue statements
 * Fix filter parser for args without space separators
 * Add support for filter keyword arguments
@@ -163,30 +163,30 @@ Yanked from rubygems, as it contained too many changes that broke compatibility.
 ## 1.9.0 / 2008-03-04
 
 * Fixed gem install rake task
-* Improve Error encapsulation in liquid by maintaining a own set of exceptions instead of relying on ruby build ins
+* Improve Error encapsulation in twig by maintaining a own set of exceptions instead of relying on ruby build ins
 
 
 ## Before 1.9.0
 
 * Added If with or / and expressions
-* Implemented .to_liquid for all objects which can be passed to liquid like Strings Arrays Hashes Numerics and Booleans. To export new objects to liquid just implement .to_liquid on them and return objects which themselves have .to_liquid methods.
+* Implemented .to_twig for all objects which can be passed to twig like Strings Arrays Hashes Numerics and Booleans. To export new objects to twig just implement .to_twig on them and return objects which themselves have .to_twig methods.
 * Added more tags to standard library
 * Added include tag ( like partials in rails )
 * [...] Gazillion of detail improvements
 * Added strainers as filter hosts for better security [Tobias Luetke]
 * Fixed that rails integration would call filter with the wrong "self" [Michael Geary]
-* Fixed bad error reporting when a filter called a method which doesn't exist. Liquid told you that it couldn't find the filter which was obviously misleading [Tobias Luetke]
+* Fixed bad error reporting when a filter called a method which doesn't exist. Twig told you that it couldn't find the filter which was obviously misleading [Tobias Luetke]
 * Removed count helper from standard lib. use size [Tobias Luetke]
 * Fixed bug with string filter parameters failing to tolerate commas in strings. [Paul Hammond]
-* Improved filter parameters. Filter parameters are now context sensitive; Types are resolved according to the rules of the context. Multiple parameters are now separated by the Liquid::ArgumentSeparator: , by default [Paul Hammond]
+* Improved filter parameters. Filter parameters are now context sensitive; Types are resolved according to the rules of the context. Multiple parameters are now separated by the Twig::ArgumentSeparator: , by default [Paul Hammond]
     {{ 'Typo' | link_to: 'http://typo.leetsoft.com', 'Typo - a modern weblog engine' }}
-* Added Liquid::Drop. A base class which you can use for exporting proxy objects to liquid which can acquire more data when used in liquid. [Tobias Luetke]
+* Added Twig::Drop. A base class which you can use for exporting proxy objects to twig which can acquire more data when used in twig. [Tobias Luetke]
 
-  class ProductDrop < Liquid::Drop
+  class ProductDrop < Twig::Drop
     def top_sales
        Shop.current.products.find(:all, :order => 'sales', :limit => 10 )
     end
   end
-  t = Liquid::Template.parse( ' {% for product in product.top_sales %} {{ product.name }} {% endfor %} '  )
+  t = Twig::Template.parse( ' {% for product in product.top_sales %} {{ product.name }} {% endfor %} '  )
   t.render('product' => ProductDrop.new )
 * Added filter parameters support. Example: {{ date | format_date: "%Y" }} [Paul Hammond]
