@@ -68,6 +68,7 @@ require 'twig/condition'
 require 'twig/module_ex'
 require 'twig/utils'
 require 'twig/token'
+require 'twig/register_in_tilt'
 
 # Load all the tags of the standard library
 #
