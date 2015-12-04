@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
 
   s.require_path = "lib"
 
-  s.add_dependency 'tilt', '~> 2'
+  s.add_dependency 'tilt', '>= 1.3', '< 3'
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'minitest'
