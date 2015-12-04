@@ -58,17 +58,17 @@ class StandardTagTest < Minitest::Test
     assert_template_result('var2: 1', '{%set var2 = var["a:b c"].paged %}var2: {{var2}}', assigns)
   end
 
-  def test_capture
+  def test_set_block
     assigns = {'var' => 'content' }
     assert_template_result('content foo content foo ',
-                           '{{ var2 }}{% capture var2 %}{{ var }} foo {% endcapture %}{{ var2 }}{{ var2 }}',
+                           '{{ var2 }}{% set var2 %}{{ var }} foo {% endset %}{{ var2 }}{{ var2 }}',
                            assigns)
   end
 
-  def test_capture_detects_bad_syntax
+  def test_set_block_detects_bad_syntax
     assert_raises(SyntaxError) do
       assert_template_result('content foo content foo ',
-                             '{{ var2 }}{% capture %}{{ var }} foo {% endcapture %}{{ var2 }}{{ var2 }}',
+                             '{{ var2 }}{% set %}{{ var }} foo {% endset %}{{ var2 }}{{ var2 }}',
                              {'var' => 'content' })
     end
   end
