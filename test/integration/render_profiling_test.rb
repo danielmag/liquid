@@ -5,7 +5,7 @@ class RenderProfilingTest < Minitest::Test
 
   class ProfilingFileSystem
     def read_template_file(template_path, context)
-      "Rendering template {% assign template_name = '#{template_path}'%}\n{{ template_name }}"
+      "Rendering template {% set template_name = '#{template_path}'%}\n{{ template_name }}"
     end
   end
 
@@ -54,7 +54,7 @@ class RenderProfilingTest < Minitest::Test
 
     included_children = t.profiler[0].children
 
-    # {% assign template_name = 'a_template' %}
+    # {% set template_name = 'a_template' %}
     assert_equal 1, included_children[0].line_number
     # {{ template_name }}
     assert_equal 2, included_children[1].line_number

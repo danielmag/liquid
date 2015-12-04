@@ -1,4 +1,4 @@
-require 'tilt' unless Tilt
+require 'tilt' unless defined? Tilt
 
 module Tilt
   class TwigTemplate < Template

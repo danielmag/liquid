@@ -1,7 +1,7 @@
 ---
   errors:
     syntax:
-      assign: "Syntax Error in 'assign' - Valid syntax: assign [var] = [source]"
+      set: "Syntax Error in 'set' - Valid syntax: set [var] = [source]"
       capture: "Syntax Error in 'capture' - Valid syntax: capture [var]"
       case: "Syntax Error in 'case' - Valid syntax: case [condition]"
       case_invalid_when: "Syntax Error in tag 'case' - Valid when condition: {% when [condition] [or condition2...] %}"

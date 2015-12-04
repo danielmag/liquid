@@ -204,11 +204,11 @@ class DropsTest < Minitest::Test
     assert_equal '3', Twig::Template.parse( '{%for i in dummy%}{%for i in dummy%}{{ s }}{%endfor%}{%endfor%}'  ).render!('context' => ContextDrop.new, 's' => Proc.new{|c| c['context.scopes'] }, 'dummy' => [1])
   end
 
-  def test_scope_with_assigns
-    assert_equal 'variable', Twig::Template.parse( '{% assign a = "variable"%}{{a}}'  ).render!('context' => ContextDrop.new)
-    assert_equal 'variable', Twig::Template.parse( '{% assign a = "variable"%}{%for i in dummy%}{{a}}{%endfor%}'  ).render!('context' => ContextDrop.new, 'dummy' => [1])
-    assert_equal 'test', Twig::Template.parse( '{% assign header_gif = "test"%}{{header_gif}}'  ).render!('context' => ContextDrop.new)
-    assert_equal 'test', Twig::Template.parse( "{% assign header_gif = 'test'%}{{header_gif}}"  ).render!('context' => ContextDrop.new)
+  def test_scope_with_sets
+    assert_equal 'variable', Twig::Template.parse( '{% set a = "variable"%}{{a}}'  ).render!('context' => ContextDrop.new)
+    assert_equal 'variable', Twig::Template.parse( '{% set a = "variable"%}{%for i in dummy%}{{a}}{%endfor%}'  ).render!('context' => ContextDrop.new, 'dummy' => [1])
+    assert_equal 'test', Twig::Template.parse( '{% set header_gif = "test"%}{{header_gif}}'  ).render!('context' => ContextDrop.new)
+    assert_equal 'test', Twig::Template.parse( "{% set header_gif = 'test'%}{{header_gif}}"  ).render!('context' => ContextDrop.new)
   end
 
   def test_scope_from_tags

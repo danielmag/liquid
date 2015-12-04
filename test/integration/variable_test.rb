@@ -56,7 +56,7 @@ class VariableTest < Minitest::Test
   end
 
   def test_assigns_not_polluted_from_template
-    template = Template.parse(%|{{ test }}{% assign test = 'bar' %}{{ test }}|)
+    template = Template.parse(%|{{ test }}{% set test = 'bar' %}{{ test }}|)
     template.assigns['test'] = 'baz'
     assert_equal 'bazbar', template.render!
     assert_equal 'bazbar', template.render!

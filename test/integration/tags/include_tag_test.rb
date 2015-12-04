@@ -28,7 +28,7 @@ class TestFileSystem
       "from TestFileSystem"
 
     when 'assignments'
-      "{% assign foo = 'bar' %}"
+      "{% set foo = 'bar' %}"
 
     else
       template_path

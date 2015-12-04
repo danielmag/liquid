@@ -20,7 +20,7 @@
   </div>
 
   <div id="articles">
-    {% assign article = pages.frontpage %}
+    {% set article = pages.frontpage %}
     {% if article.content != "" %}
       <h3>{{ article.title }}</h3>
       {{ article.content }}

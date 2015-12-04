@@ -11,8 +11,10 @@ class IfElseTagTest < Minitest::Test
   end
 
   def test_literal_comparisons
-    assert_template_result(' NO ','{% assign v = false %}{% if v %} YES {% else %} NO {% endif %}')
-    assert_template_result(' YES ','{% assign v = nil %}{% if v == nil %} YES {% else %} NO {% endif %}')
+    assert_template_result(' NO ','{% set v = false %}{% if v %} YES {% else %} NO {% endif %}')
+    assert_template_result(' NO ','{% set v = false %}{% if v %} YES {% else %} NO {% endif %}')
+    assert_template_result(' YES ','{% set v = nil %}{% if v == nil %} YES {% else %} NO {% endif %}')
+    assert_template_result(' YES ','{% set v = nil %}{% if v == nil %} YES {% else %} NO {% endif %}')
   end
 
   def test_if_else

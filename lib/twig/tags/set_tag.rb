@@ -1,14 +1,14 @@
 module Twig
 
-  # Assign sets a variable in your template.
+  # Set sets a variable in your template.
   #
-  #   {% assign foo = 'monkey' %}
+  #   {% set foo = 'monkey' %}
   #
   # You can then use the variable later in the page.
   #
   #  {{ foo }}
   #
-  class Assign < Tag
+  class SetTag < Tag
     Syntax = /(#{VariableSignature}+)\s*=\s*(.*)\s*/om
 
     def initialize(tag_name, markup, options)
@@ -18,7 +18,7 @@ module Twig
         @from = Variable.new($2,options)
         @from.line_number = line_number
       else
-        raise SyntaxError.new options[:locale].t("errors.syntax.assign".freeze)
+        raise SyntaxError.new options[:locale].t("errors.syntax.set".freeze)
       end
     end
 
@@ -34,5 +34,5 @@ module Twig
     end
   end
 
-  Template.register_tag('assign'.freeze, Assign)
+  Template.register_tag('set'.freeze, SetTag)
 end

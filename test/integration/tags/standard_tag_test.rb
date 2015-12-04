@@ -50,12 +50,12 @@ class StandardTagTest < Minitest::Test
 
   def test_hyphenated_assign
     assigns = {'a-b' => '1' }
-    assert_template_result('a-b:1 a-b:2', 'a-b:{{a-b}} {%assign a-b = 2 %}a-b:{{a-b}}', assigns)
+    assert_template_result('a-b:1 a-b:2', 'a-b:{{a-b}} {%set a-b = 2 %}a-b:{{a-b}}', assigns)
   end
 
   def test_assign_with_colon_and_spaces
     assigns = {'var' => {'a:b c' => {'paged' => '1' }}}
-    assert_template_result('var2: 1', '{%assign var2 = var["a:b c"].paged %}var2: {{var2}}', assigns)
+    assert_template_result('var2: 1', '{%set var2 = var["a:b c"].paged %}var2: {{var2}}', assigns)
   end
 
   def test_capture
@@ -172,7 +172,7 @@ class StandardTagTest < Minitest::Test
 
   def test_assign_from_case
     # Example from the shopify forums
-    code = %q({% case collection.handle %}{% when 'menswear-jackets' %}{% assign ptitle = 'menswear' %}{% when 'menswear-t-shirts' %}{% assign ptitle = 'menswear' %}{% else %}{% assign ptitle = 'womenswear' %}{% endcase %}{{ ptitle }})
+    code = %q({% case collection.handle %}{% when 'menswear-jackets' %}{% set ptitle = 'menswear' %}{% when 'menswear-t-shirts' %}{% set ptitle = 'menswear' %}{% else %}{% set ptitle = 'womenswear' %}{% endcase %}{{ ptitle }})
     template = Twig::Template.parse(code)
     assert_equal "menswear",   template.render!("collection" => {'handle' => 'menswear-jackets'})
     assert_equal "menswear",   template.render!("collection" => {'handle' => 'menswear-t-shirts'})
@@ -212,20 +212,20 @@ class StandardTagTest < Minitest::Test
   end
 
   def test_assign
-    assert_template_result 'variable', '{% assign a = "variable"%}{{a}}'
+    assert_template_result 'variable', '{% set a = "variable"%}{{a}}'
   end
 
   def test_assign_unassigned
     assigns = { 'var' => 'content' }
-    assert_template_result('var2:  var2:content', 'var2:{{var2}} {%assign var2 = var%} var2:{{var2}}', assigns)
+    assert_template_result('var2:  var2:content', 'var2:{{var2}} {%set var2 = var%} var2:{{var2}}', assigns)
   end
 
   def test_assign_an_empty_string
-    assert_template_result '', '{% assign a = ""%}{{a}}'
+    assert_template_result '', '{% set a = ""%}{{a}}'
   end
 
   def test_assign_is_global
-    assert_template_result 'variable', '{%for i in (1..2) %}{% assign a = "variable"%}{% endfor %}{{a}}'
+    assert_template_result 'variable', '{%for i in (1..2) %}{% set a = "variable"%}{% endfor %}{{a}}'
   end
 
   def test_case_detects_bad_syntax

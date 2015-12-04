@@ -18,7 +18,7 @@
 </div></div></div>
 
 <div id="mainarticle">
-  {% assign article = pages.frontpage %}
+  {% set article = pages.frontpage %}
 
   {% if article.content != "" %}
     <h2>{{ article.title }}</h2>
@@ -44,4 +44,3 @@
   </div>
   {% endfor %}
 </div>
-

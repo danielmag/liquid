@@ -65,8 +65,8 @@ class BlankTest < Minitest::Test
       {% if true %} but this is not {% endif %}}))
   end
 
-  def test_assigns_are_blank
-    assert_template_result("", wrap(' {% assign foo = "bar" %} '))
+  def test_sets_are_blank
+    assert_template_result("", wrap(' {% set foo = "bar" %} '))
   end
 
   def test_whitespace_is_blank
@@ -80,7 +80,7 @@ class BlankTest < Minitest::Test
   end
 
   def test_increment_is_not_blank
-    assert_template_result(" 0"*2*(N+1), wrap("{% assign foo = 0 %} {% increment foo %} {% decrement foo %}"))
+    assert_template_result(" 0"*2*(N+1), wrap("{% set foo = 0 %} {% increment foo %} {% decrement foo %}"))
   end
 
   def test_cycle_is_not_blank
@@ -99,8 +99,8 @@ class BlankTest < Minitest::Test
   end
 
   def test_case_is_blank
-    assert_template_result("", wrap(" {% assign foo = 'bar' %} {% case foo %} {% when 'bar' %} {% when 'whatever' %} {% else %} {% endcase %} "))
-    assert_template_result("", wrap(" {% assign foo = 'else' %} {% case foo %} {% when 'bar' %} {% when 'whatever' %} {% else %} {% endcase %} "))
-    assert_template_result("   x  "*(N+1), wrap(" {% assign foo = 'else' %} {% case foo %} {% when 'bar' %} {% when 'whatever' %} {% else %} x {% endcase %} "))
+    assert_template_result("", wrap(" {% set foo = 'bar' %} {% case foo %} {% when 'bar' %} {% when 'whatever' %} {% else %} {% endcase %} "))
+    assert_template_result("", wrap(" {% set foo = 'else' %} {% case foo %} {% when 'bar' %} {% when 'whatever' %} {% else %} {% endcase %} "))
+    assert_template_result("   x  "*(N+1), wrap(" {% set foo = 'else' %} {% case foo %} {% when 'bar' %} {% when 'whatever' %} {% else %} x {% endcase %} "))
   end
 end

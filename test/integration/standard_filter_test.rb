@@ -199,7 +199,7 @@ class StandardFiltersTest < Minitest::Test
   end
 
   def test_legacy_map_on_hashes_with_dynamic_key
-    template = "{% assign key = 'foo' %}{{ thing | map: key | map: 'bar' }}"
+    template = "{% set key = 'foo' %}{{ thing | map: key | map: 'bar' }}"
     hash = { "foo" => { "bar" => 42 } }
     assert_template_result "42", template, "thing" => hash
   end

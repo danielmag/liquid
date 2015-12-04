@@ -33,12 +33,12 @@ class TemplateTest < Minitest::Test
 
   def test_instance_assigns_persist_on_same_template_object_between_parses
     t = Template.new
-    assert_equal 'from instance assigns', t.parse("{% assign foo = 'from instance assigns' %}{{ foo }}").render!
+    assert_equal 'from instance assigns', t.parse("{% set foo = 'from instance assigns' %}{{ foo }}").render!
     assert_equal 'from instance assigns', t.parse("{{ foo }}").render!
   end
 
   def test_instance_assigns_persist_on_same_template_parsing_between_renders
-    t = Template.new.parse("{{ foo }}{% assign foo = 'foo' %}{{ foo }}")
+    t = Template.new.parse("{{ foo }}{% set foo = 'foo' %}{{ foo }}")
     assert_equal 'foo', t.render!
     assert_equal 'foofoo', t.render!
   end
@@ -51,13 +51,13 @@ class TemplateTest < Minitest::Test
 
   def test_custom_assigns_squash_instance_assigns
     t = Template.new
-    assert_equal 'from instance assigns', t.parse("{% assign foo = 'from instance assigns' %}{{ foo }}").render!
+    assert_equal 'from instance assigns', t.parse("{% set foo = 'from instance assigns' %}{{ foo }}").render!
     assert_equal 'from custom assigns', t.parse("{{ foo }}").render!('foo' => 'from custom assigns')
   end
 
   def test_persistent_assigns_squash_instance_assigns
     t = Template.new
-    assert_equal 'from instance assigns', t.parse("{% assign foo = 'from instance assigns' %}{{ foo }}").render!
+    assert_equal 'from instance assigns', t.parse("{% set foo = 'from instance assigns' %}{{ foo }}").render!
     t.assigns['foo'] = 'from persistent assigns'
     assert_equal 'from persistent assigns', t.parse("{{ foo }}").render!
   end
@@ -81,7 +81,7 @@ class TemplateTest < Minitest::Test
   end
 
   def test_resource_limits_works_with_custom_length_method
-    t = Template.parse("{% assign foo = bar %}")
+    t = Template.parse("{% set foo = bar %}")
     t.resource_limits = { :render_length_limit => 42 }
     assert_equal "", t.render!("bar" => SomethingWithLength.new)
   end
@@ -111,7 +111,7 @@ class TemplateTest < Minitest::Test
   end
 
   def test_resource_limits_assign_score
-    t = Template.parse("{% assign foo = 42 %}{% assign bar = 23 %}")
+    t = Template.parse("{% set foo = 42 %}{% set bar = 23 %}")
     t.resource_limits = { :assign_score_limit => 1 }
     assert_equal "Twig error: Memory limits exceeded", t.render()
     assert t.resource_limits[:reached]
@@ -128,7 +128,7 @@ class TemplateTest < Minitest::Test
   end
 
   def test_resource_limits_hash_in_template_gets_updated_even_if_no_limits_are_set
-    t = Template.parse("{% for a in (1..100) %} {% assign foo = 1 %} {% endfor %}")
+    t = Template.parse("{% for a in (1..100) %} {% set foo = 1 %} {% endfor %}")
     t.render!()
     assert t.resource_limits[:assign_score_current] > 0
     assert t.resource_limits[:render_score_current] > 0
@@ -137,7 +137,7 @@ class TemplateTest < Minitest::Test
 
   def test_default_resource_limits_unaffected_by_render_with_context
     context = Context.new
-    t = Template.parse("{% for a in (1..100) %} {% assign foo = 1 %} {% endfor %}")
+    t = Template.parse("{% for a in (1..100) %} {% set foo = 1 %} {% endfor %}")
     t.render!(context)
     assert context.resource_limits[:assign_score_current] > 0
     assert context.resource_limits[:render_score_current] > 0
